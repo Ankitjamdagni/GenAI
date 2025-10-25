@@ -3,6 +3,9 @@ import nltk
 # nltk.download('punkt_tab')
 # nltk.download('wordnet')
 # nltk.download('stopwords')
+# nltk.download('averaged_perceptron_tagger_eng')
+# nltk.download('maxent_ne_chunker_tab')
+# nltk.download('words')
 
 def tokenization() -> None:
     # corpus ~= paragraph
@@ -119,25 +122,119 @@ def stop_words() -> None:
  	Yours,
     Narendra Modi """
 
+    stem_word_list = []
+    clean_word_list = []
     # steps
     # take paragrapg -> convert to sentences -> convert into words-> apply stop words -> find stem words by stemming
+
+    # step 1 : paragraph/corpus to sentences/documents
     from nltk import sent_tokenize
     sentences = sent_tokenize(paragraph)
-    # print(sentences)
+    # print(len(sentences))
 
-    for sentence in sentences:
-        print(sentences)
+    # from nltk.stem import SnowballStemmer
+    # stemmer = SnowballStemmer(language="english")
+
+    from nltk.tokenize import word_tokenize
+
+    from nltk.stem import WordNetLemmatizer
+    stemmer = WordNetLemmatizer()
 
     
+    # step 2 : sentences/documnets to words
+    for index,sentence in enumerate(sentences):
+        # print(f"{index} : {(sentence)}")
+        
+        # convert sentences to words
+        words = word_tokenize(sentence)
+
+        for subindex, word in enumerate(words):
+            # stemword = stemmer.stem(word)
+            stemword = stemmer.lemmatize(word, pos="v")
+            # print(f"{index} {word} --> {stemword}")
+            stem_word_list.append(stemword.lower())
+
+            if stemword not in set(stopwords.words("english")):
+                clean_word_list.append(stemword)
+
+    refined_paragraph = " ".join(stem_word_list)
+    print("_______________________________________")
+    print("paragraph :: \n ", paragraph)
+    print("_______________________________________")
+    print("refined_paragraph :: \n ", refined_paragraph)
+    print("_______________________________________")
+    cleaned_paragraph = " ".join(clean_word_list)
+    print("cleaned_paragraph :: \n ", cleaned_paragraph)
+
+def postag() -> None:
+    paragraph = """ Dear Ankit,	 
+ 	I extend my heartfelt greetings to all of you on the auspicious occasion of Deepavali, a festival filled with energy and enthusiasm. This is the second Deepavali after the grand construction of the Ram Temple in Ayodhya. Lord Shri Ram teaches us to uphold righteousness and also gives us the courage to fight injustice. We have seen a living example of this a few months ago during Operation Sindoor. During Operation Sindoor, Bharat not only upheld righteousness but also avenged injustice.	 
+ 	This Deepavali is particularly special because, for the first time, lamps will be lit in many districts across the country, including remote areas. These are the districts where Naxalism and Maoist terrorism have been eradicated from the root. In recent times, we have seen many individuals abandoning the path of violence and joining the mainstream of development, expressing faith in the Constitution of our country. This is a major achievement for the nation.
+ 	Amid these historic achievements, the country has also embarked on next-generation reforms in recent days. On the first day of Navratri, lower GST rates were implemented. During this "GST Bachat Utsav” (Savings Festival), citizens are saving thousands of crores of rupees.
+ 	In a world going through multiple crises, Bharat has emerged as a symbol of both stability and sensitivity. We are also on track to become the third-largest economy in the world in the near future.
+ 	In this journey of a “Viksit” (Developed) and “Aatmanirbhar Bharat” (self-reliant India), our primary responsibility as citizens is to fulfill our duties towards the nation.
+ 	Let us adopt “Swadeshi” (local products) and proudly say: "This is Swadeshi!" Let us promote the spirit of “Ek Bharat, Shreshtha Bharat”. Let us respect all languages. Let us maintain cleanliness. Let us prioritize our health. Let us reduce the use of oil in our food by 10% and embrace Yoga. All these efforts will rapidly move us towards a “Viksit Bharat”.
+ 	Deepavali also teaches us that when one lamp lights another, its light doesn't diminish, but it grows further. With the same spirit, let us light lamps of harmony, cooperation and positivity in our society and surroundings this Deepavali.
+    Once again, wishing you all a very Happy Deepavali.
+ 	Yours,
+    Narendra Modi """
 
 
+    from nltk.tokenize import sent_tokenize
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    from nltk import pos_tag
 
+    # step 1: convert to sentences 
+    # step 2: convert sentences to words
+    # step 2: eliminate stop words in sentences
+    # step 3: pass sentence to postag after joining
 
+    sentences = sent_tokenize(paragraph)
 
-    from nltk.stem import SnowballStemmer
-    stemmer = SnowballStemmer(language="english")
+    for index, sentence in enumerate(sentences):
 
+        words = word_tokenize(sentence)
+        print(f"all words :: \n {words}")
+        # exit()
+        for subindex, word in enumerate(words):
+            if word in set(stopwords.words("english")):
+                words.pop(subindex)
 
+        print(f"stopword output :: \n {words}")     
+        # exit()
+        
+        postag = pos_tag(words)
+        print(f"after postag :: \n {postag}")
+        print("______________________________________")
+    
+def ner() -> None:
+    """ NAMED ENTITY RECOFNITION (NER) """
+    paragraph = """ Dear Ankit,	 
+ 	I extend my heartfelt greetings to all of you on the auspicious occasion of Deepavali, a festival filled with energy and enthusiasm. This is the second Deepavali after the grand construction of the Ram Temple in Ayodhya. Lord Shri Ram teaches us to uphold righteousness and also gives us the courage to fight injustice. We have seen a living example of this a few months ago during Operation Sindoor. During Operation Sindoor, Bharat not only upheld righteousness but also avenged injustice.	 
+ 	This Deepavali is particularly special because, for the first time, lamps will be lit in many districts across the country, including remote areas. These are the districts where Naxalism and Maoist terrorism have been eradicated from the root. In recent times, we have seen many individuals abandoning the path of violence and joining the mainstream of development, expressing faith in the Constitution of our country. This is a major achievement for the nation.
+ 	Amid these historic achievements, the country has also embarked on next-generation reforms in recent days. On the first day of Navratri, lower GST rates were implemented. During this "GST Bachat Utsav” (Savings Festival), citizens are saving thousands of crores of rupees.
+ 	In a world going through multiple crises, Bharat has emerged as a symbol of both stability and sensitivity. We are also on track to become the third-largest economy in the world in the near future.
+ 	In this journey of a “Viksit” (Developed) and “Aatmanirbhar Bharat” (self-reliant India), our primary responsibility as citizens is to fulfill our duties towards the nation.
+ 	Let us adopt “Swadeshi” (local products) and proudly say: "This is Swadeshi!" Let us promote the spirit of “Ek Bharat, Shreshtha Bharat”. Let us respect all languages. Let us maintain cleanliness. Let us prioritize our health. Let us reduce the use of oil in our food by 10% and embrace Yoga. All these efforts will rapidly move us towards a “Viksit Bharat”.
+ 	Deepavali also teaches us that when one lamp lights another, its light doesn't diminish, but it grows further. With the same spirit, let us light lamps of harmony, cooperation and positivity in our society and surroundings this Deepavali.
+    Once again, wishing you all a very Happy Deepavali.
+ 	Yours,
+    Narendra Modi """
+
+    from nltk import word_tokenize
+
+    words = word_tokenize(paragraph)
+    # print(words)
+
+    from nltk import pos_tag
+
+    postags = pos_tag(words)
+    # print(postags)
+
+    from nltk import ne_chunk
+    ne_chunk(postags).draw()
+    print(ne_chunk(postags))
 
 
 def main() -> None:
@@ -151,7 +248,13 @@ def main() -> None:
     # lemmatization()
     
     ## stopwords
-    stop_words() 
+    # stop_words()
+
+    ## PARTS OF SPEECH TAGGING
+    # postag()
+    
+    # NAMED ENTITY RECOFNITION (NER)
+    ner()
 
 
 
