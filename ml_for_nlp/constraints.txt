@@ -1,1 +1,3 @@
 nltk ~= 3.9.2
+gensim ~= 4.4.0
+pandas ~= 2.3.3
