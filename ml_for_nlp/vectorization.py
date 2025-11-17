@@ -2,8 +2,9 @@ import nltk
 import pandas as pd
 import re
 
-
-
+def ohe() ->None:
+    """ ONE HOT ENCODING """
+    
 def bow() -> None:
     """ spam/ham example(cleaning to vectorization) to vectorise the dataset.
     
@@ -88,7 +89,7 @@ def ngram() -> None:
     # create bow
     from sklearn.feature_extraction.text import CountVectorizer
 
-    # check ngram (unigrams only(1,1), unigram and bifram(1,2), unigrma and trigram(1,3), 
+    # check ngram (unigrams only(1,1), unigram and bigram(1,2), unigrma and trigram(1,3), 
     # unigram and bigram(2,3), trigram only(3,3))
     ngram_vectorizer = CountVectorizer(max_features=100,binary=True, ngram_range=(3,3))
     x = ngram_vectorizer.fit_transform(df['cleaned_messages'])    # type: ignore
@@ -116,30 +117,21 @@ def tfidf() -> None:
         print(word, index)
 
 def word2vec() -> None:
-    import gensim
-
+    """ use google's pre trained ML model for creating vectors 
+        with 300 fetures for a single word """
+    
     from gensim import downloader as api
     from gensim.models import word2vec, keyedvectors
 
-
-
     w2v_model = api.load("word2vec-google-news-300")
-
-    # model = Word2Vec.load("my_model.model")
     print("Model loaded successfully!")
-    # model_path = r"ml_for_nlp/Data/word2vec-google-news-300.model"
-    # model = keyedvectors.load_word2vec_format(model_path, binary=True)
     
     king_vector = w2v_model['king'] # type: ignore
     queen_vector = w2v_model['queen'] # type: ignore
     
-    print("Vector for 'king':")
-    print(king_vector[:10])
-
-    print("\nVector for 'queen':")
-    print(queen_vector[:10])
-
-    print(w2v_model.most_similar('king')) # type: ignore
+    print(f"\nVector for 'king': \n {king_vector[:10]}")
+    print(f"\nVector for 'queen': \n {queen_vector[:10]}")
+    print(f"\nsimilar words for king: \n{w2v_model.most_similar('king')}") # type: ignore
 
     # # Famous analogy,also mentioned in google papers: king - man + woman = queen
     result = w2v_model.most_similar(positive=['king', 'woman'], negative=['man']) # type: ignore
@@ -150,7 +142,6 @@ def main() -> None:
     # ngram()
     # tfidf()
     word2vec()
-    ...
 
 if __name__ == "__main__":
     main()
