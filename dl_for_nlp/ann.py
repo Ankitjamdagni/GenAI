@@ -1,37 +1,41 @@
+from pathlib import Path
+from keras.models import load_model
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
-
+# Globals
+GLOBALS = {"label_geo_encoder_path" : Path(Path.cwd(), "dl_for_nlp/Data/label_encoders/label_encoder_geo_data.pkl"),
+           "label_gender_encoder_path" : Path(Path.cwd(), "dl_for_nlp/Data/label_encoders/label_encoder_gender.pkl"),
+           "model_scalers_path" : Path(Path.cwd(), "dl_for_nlp/Data/Churn_Modelling_scaler.pkl")
+           }
+    
 
 
 def main() -> None:
-    df = pd.read_csv(r"dl_for_nlp/Data/Churn_Modelling.csv")
-    print(df.head())
+    encoders_and_scalers = load_encoders_scalers()
+    label_geo_encoder = encoders_and_scalers['label_geo_encoder']
+    label_gender_encoder = encoders_and_scalers['label_gender_encoder']
+    model_scalers = encoders_and_scalers['model_scalers']
+
+    sample_data = {
+        'CreditScore': '600',
+        'Geography': 'France',
+        'Gender': 'Male',
+        'Age': '40',
+        'Tenure': '3',
+        'Balance': '60000',
+        'NumOfProducts': '2',
+        'HasCrCard': '1',
+        'IsActiveMember': '1',
+        'EstimatedSalary': '50000'
+    }
+
+    output = label_gender_encoder.transform([sample_data['Gender']])
+    print(output)
 
 
-
-    # Bar plot: Credit Score by Surname
-    plt.bar(df['Surname'], df['CreditScore'])
-    plt.xlabel('Surname')
-    plt.ylabel('Credit Score')
-    plt.title('Credit Score by Customer')
-    plt.xticks(rotation=45)
-    plt.show()
-
-    # Pie chart: Gender distribution
-    df['Gender'].value_counts().plot(kind='pie', autopct='%1.1f%%', startangle=90)
-    plt.title('Gender Distribution')
-    plt.ylabel('')
-    plt.show()
-
-    # Scatter plot: Age vs Estimated Salary
-    plt.scatter(df['Age'], df['EstimatedSalary'])
-    plt.xlabel('Age')
-    plt.ylabel('Estimated Salary')
-    plt.title('Age vs Estimated Salary')
-    plt.show()
-
+    # load_checkpoints()
 
 if __name__ == "__main__":
+    from methods import load_encoders_scalers
     main()
