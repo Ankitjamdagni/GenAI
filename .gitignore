@@ -3,3 +3,4 @@ ml_for_nlp/Data/*
 dl_for_nlp/Data/*
 *.tldr
 dl_for_nlp/*.ipynb*
+__pycache__
