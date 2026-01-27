@@ -1,15 +1,23 @@
 ```
 └── 📁GenAI
-    └── 📁dl_for_nlp
-    └── 📁ml_for_nlp
-        └── 📁Data
-            ├── spamhamdata.csv
-            ├── spamhamdata.pkl
-        ├── constraints.txt
-        ├── tokenization.py
-        ├── vectorization.py
-    ├── .gitignore
-    ├── main.py
+    ├── 📁Machine_Learninng_pytorch
+    │   ├── 📁deep_learning
+    │   │   ├── 📁Classification_by_RNN
+    │   │   ├── 📁Data
+    │   │   ├── 📁Must Read
+    │   │   └── 📁Regression_by_ANN
+    │   └── 📁Shallow__Learning_sklearn
+    │       └── 📁regression
+    ├── 📁NLP
+    │   ├── 📁dl_for_nlp
+    │   │   ├── 📁ann
+    │   │   ├── 📁rnn
+    │   │   └── constraints.txt
+    │   └── 📁ml_for_nlp
+    │       ├── 📁Data
+    │       ├── constraints.txt
+    │       ├── tokenization.py
+    │       └── vectorization.py
     ├── README.md
-    └── scrap.py
+    └── file_structure.md
 ```
